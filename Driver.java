@@ -7,7 +7,22 @@ public class Driver {
         Scanner scanner = new Scanner(System.in);
         int salir = 1;
         int opcion = 0;
+        // String usuario = "";
+        // String contrasenia = "";
         
+        // boolean loggedIn = false;
+        // while (!loggedIn) {
+        //     System.out.print("Ingrese su usuario: ");
+        //     usuario = scanner.nextLine();
+        //     System.out.print("Ingrese su contraseña: ");
+        //     contrasenia = scanner.nextLine();
+        //     loggedIn = autenticarUsuario(usuario, contrasenia);
+            
+        //     if (!loggedIn) {
+        //         System.out.println("Usuario o contraseña incorrectos. Intente nuevamente.");
+        //     }
+        // }
+
         while (salir != 0) {
             printMenu();
             try {
