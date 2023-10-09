@@ -67,6 +67,13 @@ public class Driver {
         }
     }
 
+        // public static boolean autenticarUsuario(String usuario, String contrasenia) {
+    //     String usuarioValido = "usuario_valido";
+    //     String contraseniaValida = "contrasenia_valida";
+    //
+    //     return usuario.equals("usuario_valido") && contrasenia.equals("contrasenia_valida");
+    // }
+
     public static void printMenu() {
         System.out.println("");
         System.out.println("");
