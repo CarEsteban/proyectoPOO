@@ -4,7 +4,7 @@ public class Movimiento {
     private String descripcion;
     private int tipo; 
 
-    //setters
+    //metodos
     public int getMonto() {
         return monto;
     }
