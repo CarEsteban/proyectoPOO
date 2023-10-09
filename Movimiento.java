@@ -5,6 +5,10 @@ public class Movimiento {
     private int tipo; 
 
     //metodos
+    public void setMonto(int monto){
+        this.monto += monto;
+    }
+
     public int getMonto() {
         return monto;
     }

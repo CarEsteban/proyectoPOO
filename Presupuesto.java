@@ -10,16 +10,23 @@ public class Presupuesto {
     private int balance;
 
     //metodos
-    public void calcularBalance()
-    {
+
+
+    public Presupuesto(String nombrePresupuesto, int diaCreacion, int mesCreacion, int yearCreacion, ArrayList<Movimiento> movimientos) {
+        this.nombrePresupuesto = nombrePresupuesto;
+        this.diaCreacion = diaCreacion;
+        this.mesCreacion = mesCreacion;
+        this.yearCreacion = yearCreacion;
+        this.movimientos = movimientos;
     }
-    public int getBalance()
-    {
+    public void calcularBalance(){
+
+    }
+    public int getBalance(){
         return balance;
     }
 
-    public void sumarEgresos()
-    {
+    public void sumarEgresos(){
         int egresos = 0;
         for (int i = 0; i < movimientos.size(); i++) {
             if (movimientos.get(i).getTipo() == 2) {
@@ -29,8 +36,7 @@ public class Presupuesto {
         System.out.println("Los egresos son: " + egresos);
     }
 
-    public void sumarIngresos()
-    {
+    public void sumarIngresos(){
         int ingresos = 0;
         for (int i = 0; i < movimientos.size(); i++) {
             if (movimientos.get(i).getTipo() == 1) {
@@ -39,8 +45,7 @@ public class Presupuesto {
         }
         System.out.println("Los ingresos son: " + ingresos);
     }
-    public String getConsejo()
-    {
+    public String getConsejo(){
         return consejo;
     }
 
