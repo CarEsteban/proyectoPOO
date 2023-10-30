@@ -165,10 +165,11 @@ public class Driver {
         System.out.println("                Menú");
         System.out.println("*************************************");
         System.out.println("Ingrese la opción que desee:");
-        System.out.println("1: Ingreso monetario");
-        System.out.println("2: Balance");
-        System.out.println("3: Consejos extras");
-        System.out.println("4: Consulta de saldo por fechas");
+        System.out.println("1: Ingreso presupuesto planificado");
+        System.out.println("2: Ingreso post-mes");
+        System.out.println("3: Balance");
+        System.out.println("3: Consulta de saldo por fechas");
+        System.out.println("4: Consejos extras");
         System.out.println("5: Salir");
         System.out.println("");
         System.out.println("");
