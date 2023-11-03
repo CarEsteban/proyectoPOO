@@ -17,7 +17,7 @@ public class Driver {
         ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
-        String contraPrueba = generarHashMD5("angel123");
+        String contraPrueba = generarHashMD5("pepito");
         usuarios.add(new Usuario("Pepito", "Perez", "10/10/2023", "651646516540101",
         "a@gmail.com", contraPrueba, null, null));
 
@@ -46,8 +46,6 @@ public class Driver {
                         System.out.println("");
                         System.out.println("Ingrese su contraseña:");
                         contrasenia = scanner.nextLine();
-                        System.out.println(usuarios.get(0).getContrasenia());
-                        System.out.println(generarHashMD5(contrasenia));
 
                         if (autenticarUsuario(usuarios, usuario, contrasenia) == true) {
                             loggedIn = true;
@@ -76,125 +74,6 @@ public class Driver {
             opcion = 0;
             loggedIn = false;
         }
-
-        
-        /*while (salir) {
-            System.out.println("");
-            System.out.println("Ingrese su usuario:");
-            usuario = scanner.nextLine();
-            System.out.println("");
-            System.out.println("Ingrese su contraseña:");
-            contrasenia = scanner.nextLine();
-            System.out.println(usuarios.get(0).getContrasenia());
-            System.out.println(generarHashMD5(contrasenia));
-
-            if (autenticarUsuario(usuarios, usuario, contrasenia) == true) {
-                loggedIn = true;
-            }
-
-            else {
-                System.out.println("");
-                System.out.println("Usuario o contraseña incorrectos. Intente nuevamente.");
-            }*/
-
-            /*if (!loggedIn) {
-                System.out.println("Usuario o contraseña incorrectos. Intente nuevamente.");
-                System.out.print("Desea crear un usuario? 1)Si 2)No\n" );
-                opc = scanner.nextInt();
-                scanner.nextLine();
-                switch (opc) {
-                    case 1: 
-                        String[] datosUsuario = ingresarNuevoUsuario();
-                        user = new Usuario(datosUsuario[0], datosUsuario[1], datosUsuario[2], datosUsuario[3], datosUsuario[4], datosUsuario[5], null, null);
-                        break;
-                    case 2:
-                        loggedIn = false;
-                        break;
-                }
-            }
-        }*/
-
-
-        /*while (loggedIn != 0) {
-            printMenu();
-            try {
-                opcion = scanner.nextInt();
-                scanner.nextLine();
-            } catch (InputMismatchException e) {
-                System.out.println("");
-                System.out.println("Ingrese un número.");
-                scanner.nextLine();
-            }
-            
-            switch (opcion) {
-                case 1:
-                    System.out.println("BIENVENIDO AL INGRESO DE EGRESOS E INGRESOS " + user.getNombre());
-                    opc=1;
-                    while(opc != 0) {
-                        System.out.println("Desea agregar un ingreso (1) o un egreso (2)?");
-                        opc = scanner.nextInt();
-                        scanner.nextLine();
-                        
-                        switch (opc) {
-                            case 1:
-                                System.out.println("Ingrese el monto del ingreso");
-                                monto = scanner.nextInt();
-                                scanner.nextLine();
-                                ingresos.setMonto(monto);
-                                break;
-            
-                            case 2:
-                                System.out.println("Ingrese el monto del egreso");
-                                monto = scanner.nextInt();
-                                scanner.nextLine();
-                                egresos.setMonto(monto);
-                                break;
-            
-                            default:
-                                System.out.println("Opción no válida. Intente nuevamente.");
-                                break;
-                        }
-            
-                        System.out.println("Desea agregar otro movimiento? (1) Sí / (2) No");
-                        opc = scanner.nextInt();
-                        scanner.nextLine();
-                        if(opc==1){
-                            opc=1;
-                        }else{
-                            opc=0;
-                        }
-                    } 
-
-
-                    break;
-                case 2:
-                    System.out.println("BIENVENIDO AL BALANCE");
-                    int diferencia = ingresos.getMonto() - egresos.getMonto();
-                    System.out.println("Este es el balance del mes: " + diferencia);
-                    if(diferencia<0){
-                        System.out.println("Consejo: Debes invertir en BTC");
-                    }else{
-                        System.out.println("Consejo: Vas muy bien Elon Musk");
-                    }
-                    break;
-                case 3:
-                    System.out.println("// Lógica para la opción 3");
-                    break;
-                case 4:
-                    System.out.println("// Lógica para la opción 4");
-                    break;
-                case 5:
-                    salir = 0;
-                    System.out.println("// Salir del bucle");
-                    break;
-                default:
-                    System.out.println("");
-                    System.out.println("Número inválido. Intente nuevamente.");
-                    break;
-            }
-
-            opcion = 0;
-        }*/
     }
 
     public static String[] ingresarNuevoUsuario(){
