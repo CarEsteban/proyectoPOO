@@ -17,6 +17,7 @@ public class Driver {
         ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
+        // Usuario para probar el sistema de hash
         String contraPrueba = generarHashMD5("pepito");
         usuarios.add(new Usuario("Pepito", "Perez", "10/10/2023", "651646516540101",
         "a@gmail.com", contraPrueba, null, null));
@@ -167,7 +168,6 @@ public class Driver {
         System.out.println("4: Consulta de saldo por fechas");
         System.out.println("5: Consejos extras");
         System.out.println("6: Salir");
-        System.out.println("");
         System.out.println("");
         System.out.println("");
     }
