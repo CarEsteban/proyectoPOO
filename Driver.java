@@ -9,7 +9,7 @@ public class Driver {
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int opcion = 0,opc=0,monto;
+        int opcion = 0, opcion1 = 0, opcion2 = 0,monto;
         String usuario, contrasenia ;
         Usuario user = null; 
         Movimiento ingresos = new Movimiento();
@@ -22,7 +22,6 @@ public class Driver {
         "a@gmail.com", contraPrueba, null, null));
 
         boolean loggedIn = false;
-        boolean logIn = true;
         boolean principal = true;
 
         while (principal) {
@@ -39,28 +38,46 @@ public class Driver {
 
             switch (opcion) {
                 case 1: // Opción para iniciar sesión
-                    while (logIn) {
-                        System.out.println("");
-                        System.out.println("Ingrese su usuario:");
-                        usuario = scanner.nextLine();
-                        System.out.println("");
-                        System.out.println("Ingrese su contraseña:");
-                        contrasenia = scanner.nextLine();
+                    System.out.println("");
+                    System.out.println("Ingrese su usuario:");
+                    usuario = scanner.nextLine();
+                    System.out.println("");
+                    System.out.println("Ingrese su contraseña:");
+                    contrasenia = scanner.nextLine();
 
-                        if (autenticarUsuario(usuarios, usuario, contrasenia) == true) {
-                            loggedIn = true;
-                        }
+                    if (autenticarUsuario(usuarios, usuario, contrasenia) == true) {
+                        loggedIn = true;
+                    }
 
-                        else {
+                    else {
+                        System.out.println("");
+                        System.out.println("Usuario o contraseña incorrectos. Intente nuevamente.");
+                    }
+
+                    if (loggedIn == true) { // Si se inició sesión
+                        System.out.println("");
+                        System.out.println("Bienvenido " + usuario);
+                        printMenu();
+                        try {
+                            opcion = scanner.nextInt();
+                            scanner.nextLine();
+                        } catch (InputMismatchException e) {
                             System.out.println("");
-                            System.out.println("Usuario o contraseña incorrectos. Intente nuevamente.");
+                            System.out.println("Ingrese un número.");
+                            scanner.nextLine();
                         }
+
+                        
+                    }
+
+                    else { // Si no se inició sesión
+
                     }
                     break;
                 case 2: // Opción para crear un nuevo usuario
                     break;
                 case 3: // Opción para salir
-                    logIn = false;
+                    principal = false;
                     System.out.println("Hasta pronto :)");
                     break;
                 case 0:
@@ -125,7 +142,7 @@ public class Driver {
         System.out.println("");
         System.out.println("");
         System.out.println("*************************************");
-        System.out.println("                Menú");
+        System.out.println("            Menú Pricipal");
         System.out.println("*************************************");
         System.out.println("Ingrese la opción que desee:");
         System.out.println("1: Ingreso presupuesto planificado");
