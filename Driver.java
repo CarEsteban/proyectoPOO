@@ -57,9 +57,11 @@ public class Driver {
                     if (loggedIn == true) { // Si se inició sesión
                         System.out.println("");
                         System.out.println("Bienvenido " + usuario);
+
                         printMenu();
+
                         try {
-                            opcion = scanner.nextInt();
+                            opcion1 = scanner.nextInt();
                             scanner.nextLine();
                         } catch (InputMismatchException e) {
                             System.out.println("");
@@ -67,7 +69,20 @@ public class Driver {
                             scanner.nextLine();
                         }
 
-                        
+                        switch (opcion1) {
+                            case 1: // Ingreso presupuesto planificado
+                            case 2: // Ingreso post-mes
+                            case 3: // Balance
+                            case 4: // Consulta de saldo por fechas
+                            case 5: // Consejos extras
+                            case 6: // Salir
+                            case 0:
+                                continue;
+                            default:
+                                System.out.println("");
+                                System.out.println("Número inválido. Intente nuevamente.");
+                                break;
+                        }
                     }
 
                     else { // Si no se inició sesión
@@ -89,6 +104,7 @@ public class Driver {
             }
 
             opcion = 0;
+            opcion1 = 0;
             loggedIn = false;
         }
     }
@@ -142,15 +158,15 @@ public class Driver {
         System.out.println("");
         System.out.println("");
         System.out.println("*************************************");
-        System.out.println("            Menú Pricipal");
+        System.out.println("            Menú Principal");
         System.out.println("*************************************");
         System.out.println("Ingrese la opción que desee:");
         System.out.println("1: Ingreso presupuesto planificado");
         System.out.println("2: Ingreso post-mes");
         System.out.println("3: Balance");
-        System.out.println("3: Consulta de saldo por fechas");
-        System.out.println("4: Consejos extras");
-        System.out.println("5: Salir");
+        System.out.println("4: Consulta de saldo por fechas");
+        System.out.println("5: Consejos extras");
+        System.out.println("6: Salir");
         System.out.println("");
         System.out.println("");
         System.out.println("");
