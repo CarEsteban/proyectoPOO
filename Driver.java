@@ -65,24 +65,29 @@ public class Driver {
                             scanner.nextLine();
                         }
 
-                        switch (opcion1) {
-                            case 1: // Ingreso presupuesto planificado
-                            case 2: // Ingreso post-mes
-                            case 3: // Balance
-                            case 4: // Consulta de saldo por fechas
-                            case 5: // Consejos extras
-                            case 6: // Salir
-                            case 0:
-                                continue;
-                            default:
-                                System.out.println("");
-                                System.out.println("Número inválido. Intente nuevamente.");
-                                break;
+                        while (loggedIn) {
+                            switch (opcion1) {
+                                case 1: // Ingreso presupuesto planificado
+                                    break;
+                                case 2: // Ingreso post-mes
+                                    break;
+                                case 3: // Balance
+                                    break;
+                                case 4: // Consulta de saldo por fechas
+                                    break;
+                                case 5: // Consejos extras
+                                    break;
+                                case 6: // Salir
+                                    loggedIn = false;
+                                    break;
+                                case 0:
+                                    continue;
+                                default:
+                                    System.out.println("");
+                                    System.out.println("Número inválido. Intente nuevamente.");
+                                    break;
+                            }
                         }
-                    }
-
-                    else { // Si no se inició sesión
-
                     }
                     break;
                 case 2: // Opción para crear un nuevo usuario
