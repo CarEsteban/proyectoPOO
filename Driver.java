@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.lang.Character.Subset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
@@ -7,25 +9,94 @@ public class Driver {
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int salir = 1, opcion = 0,opc=0,monto;
+        int opcion = 0,opc=0,monto;
         String usuario, contrasenia ;
         Usuario user = null; 
         Movimiento ingresos = new Movimiento();
         Movimiento egresos = new Movimiento();
         ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
+        ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+
+        String contraPrueba = generarHashMD5("angel123");
+        usuarios.add(new Usuario("Angel", "Esquit", "10/10/2023", "651646516540101",
+        "a@gmail.com", contraPrueba, null, null));
 
         boolean loggedIn = false;
-        while (!loggedIn) {
-            System.out.print("Ingrese su usuario: \n");
-            usuario = scanner.nextLine();
-            System.out.print("Ingrese su contraseña: \n");
-            contrasenia = scanner.nextLine();
+        boolean logIn = true;
+        boolean principal = true;
 
-            if (user != null) {
-                loggedIn = autenticarUsuario(user);
+        while (principal) {
+            iniciarOCrear();
+
+            try {
+                opcion = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("");
+                System.out.println("Ingrese un número.");
+                scanner.nextLine();
             }
 
-            if (!loggedIn) {
+            switch (opcion) {
+                case 1:
+                    while (logIn) {
+                        System.out.println("");
+                        System.out.println("Ingrese su usuario:");
+                        usuario = scanner.nextLine();
+                        System.out.println("");
+                        System.out.println("Ingrese su contraseña:");
+                        contrasenia = scanner.nextLine();
+                        System.out.println(usuarios.get(0).getContrasenia());
+                        System.out.println(generarHashMD5(contrasenia));
+
+                        if (autenticarUsuario(usuarios, usuario, contrasenia) == true) {
+                            loggedIn = true;
+                        }
+
+                        else {
+                            System.out.println("");
+                            System.out.println("Usuario o contraseña incorrectos. Intente nuevamente.");
+                        }
+                    }
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    logIn = false;
+                    System.out.println("Hasta pronto :)");
+                    break;
+                case 0:
+                    continue;
+                default:
+                    System.out.println("");
+                    System.out.println("Número inválido. Intente nuevamente.");
+                    break;
+            }
+
+            opcion = 0;
+        }
+
+        
+        /*while (salir) {
+            System.out.println("");
+            System.out.println("Ingrese su usuario:");
+            usuario = scanner.nextLine();
+            System.out.println("");
+            System.out.println("Ingrese su contraseña:");
+            contrasenia = scanner.nextLine();
+            System.out.println(usuarios.get(0).getContrasenia());
+            System.out.println(generarHashMD5(contrasenia));
+
+            if (autenticarUsuario(usuarios, usuario, contrasenia) == true) {
+                loggedIn = true;
+            }
+
+            else {
+                System.out.println("");
+                System.out.println("Usuario o contraseña incorrectos. Intente nuevamente.");
+            }*/
+
+            /*if (!loggedIn) {
                 System.out.println("Usuario o contraseña incorrectos. Intente nuevamente.");
                 System.out.print("Desea crear un usuario? 1)Si 2)No\n" );
                 opc = scanner.nextInt();
@@ -40,10 +111,10 @@ public class Driver {
                         break;
                 }
             }
-        }
+        }*/
 
 
-        while (salir != 0) {
+        /*while (loggedIn != 0) {
             printMenu();
             try {
                 opcion = scanner.nextInt();
@@ -122,7 +193,7 @@ public class Driver {
             }
 
             opcion = 0;
-        }
+        }*/
     }
 
     public static String[] ingresarNuevoUsuario(){
@@ -153,9 +224,21 @@ public class Driver {
         return datosUsuario;
     }
 
-    public static boolean autenticarUsuario(Usuario user) {
+    public static boolean autenticarUsuario(ArrayList<Usuario> usuarios, String usuario, String contrasenia) {
+        boolean encontrado = false;
 
-        return user.getNombre().equals(user.getNombre()) && user.getContrasenia().equals(user.getContrasenia());
+        for (Usuario usuario1 : usuarios) {
+            if (usuario1.getNombre().equals(usuario) && usuario1.getContrasenia().equals(generarHashMD5(contrasenia))) {
+                encontrado = true;
+                break;
+            }
+
+            else {
+                continue;
+            }
+        }
+
+        return encontrado;
     }
 
     public static void printMenu() {
@@ -174,5 +257,36 @@ public class Driver {
         System.out.println("");
         System.out.println("");
         System.out.println("");
+    }
+
+    public static void iniciarOCrear() {
+        System.out.println("");
+        System.out.println("Ingrese la opción que desee:");
+        System.out.println("1: Iniciar sesión");
+        System.out.println("2: Crear usuario");
+        System.out.println("3: Salir");
+        System.out.println("");
+    }
+
+    public static String generarHashMD5(String texto) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(texto.getBytes());
+            byte[] hash = md.digest();
+
+            // Convertir el hash de bytes a representación hexadecimal
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
