@@ -17,11 +17,6 @@ public class Driver {
         ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
-        // Usuario para probar el sistema de hash
-        String contraPrueba = generarHashMD5("pepito");
-        usuarios.add(new Usuario("Pepito", "Perez", "10/10/2023", "651646516540101",
-        "a@gmail.com", contraPrueba, null, null));
-
         boolean loggedIn = false;
         boolean principal = true;
 
@@ -91,6 +86,8 @@ public class Driver {
                     }
                     break;
                 case 2: // Opción para crear un nuevo usuario
+                    String[] datosusuario = ingresarNuevoUsuario();
+                    usuarios.add(new Usuario(datosusuario[0], datosusuario[1], datosusuario[2], datosusuario[3], datosusuario[4], generarHashMD5(datosusuario[5]), null, null));
                     break;
                 case 3: // Opción para salir
                     principal = false;
