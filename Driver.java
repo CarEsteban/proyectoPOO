@@ -38,7 +38,7 @@ public class Driver {
             }
 
             switch (opcion) {
-                case 1:
+                case 1: // Opción para iniciar sesión
                     while (logIn) {
                         System.out.println("");
                         System.out.println("Ingrese su usuario:");
@@ -59,9 +59,9 @@ public class Driver {
                         }
                     }
                     break;
-                case 2:
+                case 2: // Opción para crear un nuevo usuario
                     break;
-                case 3:
+                case 3: // Opción para salir
                     logIn = false;
                     System.out.println("Hasta pronto :)");
                     break;
@@ -74,6 +74,7 @@ public class Driver {
             }
 
             opcion = 0;
+            loggedIn = false;
         }
 
         
