@@ -18,7 +18,7 @@ public class Driver {
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
         String contraPrueba = generarHashMD5("angel123");
-        usuarios.add(new Usuario("Angel", "Esquit", "10/10/2023", "651646516540101",
+        usuarios.add(new Usuario("Pepito", "Perez", "10/10/2023", "651646516540101",
         "a@gmail.com", contraPrueba, null, null));
 
         boolean loggedIn = false;
