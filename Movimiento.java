@@ -1,3 +1,5 @@
+import java.util.Date;
+
 public class Movimiento {
     private int monto;
     private String categoria;
