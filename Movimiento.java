@@ -2,7 +2,8 @@ public class Movimiento {
     private int monto;
     private String categoria;
     private String descripcion;
-    private int tipo; 
+    private int tipo;
+    private Date fecha;
 
     //metodos
     public void setMonto(int monto){
@@ -20,5 +21,11 @@ public class Movimiento {
     }
     public int getTipo() {
         return tipo;
+    }
+    public Date getFecha() {
+        return fecha;
+    }
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 }
