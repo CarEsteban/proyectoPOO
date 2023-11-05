@@ -4,6 +4,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 public class Driver {
     
@@ -72,8 +75,17 @@ public class Driver {
                                 case 2: // Ingreso post-mes
                                     break;
                                 case 3: // Balance
+                                    user.getPresupuesto().calcularBalance();
+                                    System.out.println("Balance actual: " + user.getPresupuesto().getBalance());
                                     break;
                                 case 4: // Consulta de saldo por fechas
+                                    System.out.println("Ingrese la fecha de inicio (en formato YYYY-MM-DD):");
+                                    String fechaInicioStr = scanner.nextLine();
+                                    Date fechaInicio = parsearFecha(fechaInicioStr);
+                                    System.out.println("Ingrese la fecha de fin (en formato YYYY-MM-DD):");
+                                    String fechaFinStr = scanner.nextLine();
+                                    Date fechaFin = parsearFecha(fechaFinStr);
+                                    user.getPresupuesto().consultarSaldosPorFechas(fechaInicio, fechaFin);
                                     break;
                                 case 5: // Consejos extras
                                     break;
@@ -204,4 +216,5 @@ public class Driver {
             return null;
         }
     }
+
 }
