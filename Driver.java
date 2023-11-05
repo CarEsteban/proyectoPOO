@@ -216,5 +216,13 @@ public class Driver {
             return null;
         }
     }
-
+    public static Date parsearFecha(String fechaStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date fecha = sdf.parse(fechaStr);
+            return fecha;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;}
+        }
 }
