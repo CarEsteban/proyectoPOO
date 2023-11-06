@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.File;
 import java.lang.Character.Subset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -54,23 +55,25 @@ public class Driver {
                     }
 
                     if (loggedIn == true) { // Si se inició sesión
-                        System.out.println("");
-                        System.out.println("Bienvenido " + usuario);
-
-                        printMenu();
-
-                        try {
-                            opcion1 = scanner.nextInt();
-                            scanner.nextLine();
-                        } catch (InputMismatchException e) {
-                            System.out.println("");
-                            System.out.println("Ingrese un número.");
-                            scanner.nextLine();
-                        }
-
                         while (loggedIn) {
+                            System.out.println("");
+                            System.out.println("Bienvenido " + usuario);
+
+                            printMenu();
+
+                            try {
+                                opcion1 = scanner.nextInt();
+                                scanner.nextLine();
+                            } catch (InputMismatchException e) {
+                                System.out.println("");
+                                System.out.println("Ingrese un número.");
+                                scanner.nextLine();
+                            }
                             switch (opcion1) {
                                 case 1: // Ingreso presupuesto planificado
+                                    System.out.println("Ingreso del presupuesto planificado");
+
+                                    loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 2: // Ingreso post-mes
                                     break;
@@ -171,18 +174,16 @@ public class Driver {
 
     public static void printMenu() {
         System.out.println("");
-        System.out.println("");
         System.out.println("*************************************");
         System.out.println("            Menú Principal");
         System.out.println("*************************************");
         System.out.println("Ingrese la opción que desee:");
         System.out.println("1: Ingreso presupuesto planificado");
-        System.out.println("2: Ingreso post-mes");
+        System.out.println("2: Ingreso presupuesto ejecutado");
         System.out.println("3: Balance");
         System.out.println("4: Consulta de saldo por fechas");
         System.out.println("5: Consejos extras");
         System.out.println("6: Salir");
-        System.out.println("");
         System.out.println("");
     }
 
@@ -224,5 +225,23 @@ public class Driver {
         } catch (ParseException e) {
             e.printStackTrace();
             return null;}
+    }
+    
+    private static boolean volverAlMenu(Scanner scanner, String eleccion) {
+        System.out.println("¿Desea volver" + eleccion + " (1: Sí, 0: No): ");
+        int opcion = scanner.nextInt();
+        scanner.nextLine();
+        if (opcion == 0) {
+            if (eleccion.equals(" al menú? ")) {
+                System.out.println("Saliendo del programa.");
+
+                return false;
+            } else {
+                System.out.println("Saliendo de la opción.");
+                return false;
+            }
+        } else {
+            return true;
         }
+    }
 }
