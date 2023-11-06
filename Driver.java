@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import java.io.File;
-import java.lang.Character.Subset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -14,8 +13,11 @@ public class Driver {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int opcion = 0, opcion1 = 0, opcion2 = 0,monto;
+        File usuariosFile = new File("usuariosFile.csv");
+        File datosUsuariosFile = new File("datosUsuariosFile.csv");
         String usuario, contrasenia ;
         Usuario user = null; 
+        FileManagement fileManagement = new FileManagement();
         Movimiento ingresos = new Movimiento();
         Movimiento egresos = new Movimiento();
         ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
@@ -76,10 +78,18 @@ public class Driver {
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 2: // Ingreso post-mes
+                                    System.out.println("Ingreso del presupuesto ejecutado");
+
+                                    //fileManagement.abrirCSV(usuariosFile);
+                                    //usuarios = fileManagement.leerUsuarios();
+
+                                    loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 3: // Balance
                                     user.getPresupuesto().calcularBalance();
                                     System.out.println("Balance actual: " + user.getPresupuesto().getBalance());
+                                    
+                                    loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 4: // Consulta de saldo por fechas
                                     System.out.println("Ingrese la fecha de inicio (en formato YYYY-MM-DD):");
@@ -89,13 +99,18 @@ public class Driver {
                                     String fechaFinStr = scanner.nextLine();
                                     Date fechaFin = parsearFecha(fechaFinStr);
                                     user.getPresupuesto().consultarSaldosPorFechas(fechaInicio, fechaFin);
+                                    
+                                    loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 5: // Consejos extras
+                                
+                                    loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 6: // Salir
                                     loggedIn = false;
                                     break;
                                 case 0:
+                                    loggedIn = false;
                                     continue;
                                 default:
                                     System.out.println("");
@@ -178,8 +193,8 @@ public class Driver {
         System.out.println("            Menú Principal");
         System.out.println("*************************************");
         System.out.println("Ingrese la opción que desee:");
-        System.out.println("1: Ingreso presupuesto planificado");
-        System.out.println("2: Ingreso presupuesto ejecutado");
+        System.out.println("1: Ingresar presupuesto planificado");
+        System.out.println("2: Ingresar presupuesto ejecutado");
         System.out.println("3: Balance");
         System.out.println("4: Consulta de saldo por fechas");
         System.out.println("5: Consejos extras");

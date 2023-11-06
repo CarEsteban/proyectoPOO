@@ -12,7 +12,7 @@ public class Usuario {
     private ArrayList<String> categoriasUsuario;
 
     public Usuario(String nombre, String apellido, String fechaNac, String dpi, String correo,
-            String contrasenia, Presupuesto presupuesto, ArrayList<String> categoriasUsuario) {
+        String contrasenia, Presupuesto presupuesto, ArrayList<String> categoriasUsuario) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaNac = fechaNac;
