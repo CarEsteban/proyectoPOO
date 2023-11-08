@@ -164,13 +164,36 @@ public class Driver {
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 2: // Ingreso post-mes
-                                    System.out.println("Ingreso del presupuesto ejecutado");
+                                    if (loggedIn) {
+                                        System.out.println("Ingreso del presupuesto ejecutado");
+                                
+                                        System.out.print("Ingresa el monto ejecutado: ");
+                                        int montoEjecutado = scanner.nextInt();
+                                        scanner.nextLine();
+                                
+                                        System.out.print("Ingresa la fecha del monto ejecutado (en formato YYYY-MM-DD): ");
+                                        String fechaMontoEjecutado = scanner.nextLine();
+                                
+                                        Movimiento movimientoEjecutado = new Movimiento();
+                                        movimientoEjecutado.setMonto(montoEjecutado);
+                                        movimientoEjecutado.setFecha(fechaMontoEjecutado);
+                                
+                                        // Asigna un tipo 2 para indicar que es un egreso ejecutado
+                                        movimientoEjecutado.setTipo(2);
+                                
+                                        user.getPresupuesto().getMovimientos().add(movimientoEjecutado);
+                                
+                                        System.out.println("Monto ejecutado ingresado con éxito.");
+                                    } else {
+                                        System.out.println("Debe iniciar sesión para ingresar presupuesto ejecutado.");
+                                    }
+                                
+                                    loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
+                                    break;
 
                                     //fileManagement.abrirCSV(usuariosFile);
                                     //usuarios = fileManagement.leerUsuarios();
 
-                                    loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
-                                    break;
                                 case 3: // Balance
                                     user.getPresupuesto().calcularBalance();
                                     System.out.println("Balance actual: " + user.getPresupuesto().getBalance());

@@ -25,20 +25,19 @@ public class Presupuesto {
         this.movimientos = movimientos;
     }
 
-    public void calcularBalance(){
-        int ingresos = 0;
-        int egresos = 0;
-
+    public void calcularBalance() {
+        int ingresosPlanificados = 0;
+        int egresosEjecutados = 0;
+    
         for (Movimiento movimiento : movimientos) {
-            if (movimiento.getTipo() == 1) { // Ingresos
-                ingresos += movimiento.getMonto();
-            } else if (movimiento.getTipo() == 2) { // Egresos
-                egresos += movimiento.getMonto();
+            if (movimiento.getTipo() == 1) { // Ingresos planificados
+                ingresosPlanificados += movimiento.getMonto();
+            } else if (movimiento.getTipo() == 2) { // Egresos ejecutados
+                egresosEjecutados += movimiento.getMonto();
             }
         }
-
-        balance = ingresos - egresos;
-
+    
+        balance = ingresosPlanificados - egresosEjecutados;
     }
     public int getBalance(){
         return balance;

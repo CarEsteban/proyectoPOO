@@ -32,4 +32,7 @@ public class Movimiento {
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
 }
