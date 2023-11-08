@@ -26,6 +26,15 @@ public class Driver {
         boolean loggedIn = false;
         boolean principal = true;
 
+
+        //Crear archivos si no estan creados en la computadora
+        String[] encabezadoUsuario = {"Nombre", "Apellido", "Fecha Nacimiento","DPI","Correo","Password"};
+        fileManagement.crearCSV(usuariosFile, encabezadoUsuario);
+        String[] encabezadoDatos = {"Nombre", "Categoria", "Monto"};
+        fileManagement.crearCSV(datosUsuariosFile, encabezadoDatos);
+
+
+
         while (principal) {
             iniciarOCrear();
 
@@ -35,13 +44,12 @@ public class Driver {
             } catch (InputMismatchException e) {
                 System.out.println("");
                 System.out.println("Ingrese un número.");
-                scanner.nextLine();
             }
 
             switch (opcion) {
                 case 1: // Opción para iniciar sesión
                     System.out.println("");
-                    System.out.println("Ingrese su usuario:");
+                    System.out.println("Ingrese su nombre de usuario:");
                     usuario = scanner.nextLine();
                     System.out.println("");
                     System.out.println("Ingrese su contraseña:");
@@ -49,9 +57,7 @@ public class Driver {
 
                     if (autenticarUsuario(usuarios, usuario, contrasenia) == true) {
                         loggedIn = true;
-                    }
-
-                    else {
+                    }else {
                         System.out.println("");
                         System.out.println("Usuario o contraseña incorrectos. Intente nuevamente.");
                     }
@@ -121,9 +127,11 @@ public class Driver {
                     }
                     break;
                 case 2: // Opción para crear un nuevo usuario
-                    String[] datosusuario = ingresarNuevoUsuario();
-                    usuarios.add(new Usuario(datosusuario[0], datosusuario[1], datosusuario[2], datosusuario[3], datosusuario[4], generarHashMD5(datosusuario[5]), null, null));
+
+                    String[] datosusuario = ingresarNuevoUsuario(scanner,fileManagement,usuariosFile);
+                    usuarios.add(new Usuario(datosusuario[0], datosusuario[1], datosusuario[2], datosusuario[3], datosusuario[4], datosusuario[5], null, null));
                     break;
+
                 case 3: // Opción para salir
                     principal = false;
                     System.out.println("Hasta pronto :)");
@@ -142,9 +150,8 @@ public class Driver {
         }
     }
 
-    public static String[] ingresarNuevoUsuario(){
-        String nombre, apellido, fechaNac, dpi, correo, contrasenia;
-        Scanner scanner = new Scanner(System.in);
+    public static String[] ingresarNuevoUsuario(Scanner scanner,FileManagement fileManagement,File usuariosFile){
+        String nombre, apellido, fechaNac, dpi, correo, contrasenia,contraseniaEscript;
 
 
         System.out.print("Ingrese su nombre: ");
@@ -165,8 +172,9 @@ public class Driver {
         System.out.print("Ingrese su contraseña: ");
         contrasenia = scanner.nextLine();
 
-        
-        String[] datosUsuario = {nombre, apellido, fechaNac, dpi, correo, contrasenia};
+        contraseniaEscript = generarHashMD5(contrasenia);
+        String[] datosUsuario = {nombre, apellido, fechaNac, dpi, correo, contraseniaEscript};
+        fileManagement.ingresarNuevoUsuario(datosUsuario, usuariosFile);
         return datosUsuario;
     }
 
@@ -208,7 +216,7 @@ public class Driver {
         System.out.println("1: Iniciar sesión");
         System.out.println("2: Crear usuario");
         System.out.println("3: Salir");
-        System.out.println("");
+        System.out.print("Opcion: ");
     }
 
     public static String generarHashMD5(String texto) {
