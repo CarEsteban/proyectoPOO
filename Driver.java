@@ -255,6 +255,7 @@ public class Driver {
         contraseniaEscript = generarHashMD5(contrasenia);
         String[] datosUsuario = {nombre, apellido, fechaNac, dpi, correo, contraseniaEscript};
         fileManagement.ingresarNuevoUsuario(datosUsuario, usuariosFile);
+        System.out.println("Su nombre de usuario es: "+nombre);
         return datosUsuario;
     }
 
