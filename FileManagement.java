@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 public class FileManagement {
     static File usuariosFile = new File("usuariosFile.csv");
     static File datosUsuariosFile = new File("datosUsuariosFile.csv");

@@ -1,5 +1,7 @@
 import java.util.Scanner;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -18,9 +20,11 @@ public class Driver {
         String usuario, contrasenia ;
         Usuario user = null; 
         FileManagement fileManagement = new FileManagement();
+        /*
         Movimiento ingresos = new Movimiento();
         Movimiento egresos = new Movimiento();
         ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
+        */
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
         boolean loggedIn = false;
@@ -55,7 +59,7 @@ public class Driver {
                     System.out.println("Ingrese su contraseña:");
                     contrasenia = scanner.nextLine();
 
-                    if (autenticarUsuario(usuarios, usuario, contrasenia) == true) {
+                    if (autenticarUsuario(usuario, contrasenia,usuariosFile) == true) {
                         loggedIn = true;
                     }else {
                         System.out.println("");
@@ -178,21 +182,29 @@ public class Driver {
         return datosUsuario;
     }
 
-    public static boolean autenticarUsuario(ArrayList<Usuario> usuarios, String usuario, String contrasenia) {
-        boolean encontrado = false;
+    public static boolean autenticarUsuario(String usuario, String contrasenia, File nombreFile) {
+        String contraseniaEncrip = generarHashMD5(contrasenia);
+        
 
-        for (Usuario usuario1 : usuarios) {
-            if (usuario1.getNombre().equals(usuario) && usuario1.getContrasenia().equals(generarHashMD5(contrasenia))) {
-                encontrado = true;
-                break;
-            }
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] datosUsuario = line.split(",");
 
-            else {
-                continue;
+                if (datosUsuario.length > 5) {
+                    String nombreEnArchivo = datosUsuario[0];
+                    String contraseniaEnArchivo = datosUsuario[5];
+                    if (nombreEnArchivo.equals(usuario) && contraseniaEnArchivo.equals(contraseniaEncrip)) {
+                        return true;
+                    }
+                }
+
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return encontrado;
+        return false;
     }
 
     public static void printMenu() {
