@@ -5,13 +5,15 @@ public class Movimiento {
     private String categoria;
     private String descripcion;
     private int tipo;
-    private Date fecha;
+    private String fecha;
 
     //metodos
     public void setMonto(int monto){
-        this.monto += monto;
+        this.monto = monto;
     }
-
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
     public int getMonto() {
         return monto;
     }
@@ -24,10 +26,10 @@ public class Movimiento {
     public int getTipo() {
         return tipo;
     }
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 }

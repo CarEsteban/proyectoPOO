@@ -14,18 +14,16 @@ public class Driver {
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int opcion = 0, opcion1 = 0, opcion2 = 0,monto;
-        File usuariosFile = new File("usuariosFile.csv");
-        File datosUsuariosFile = new File("datosUsuariosFile.csv");
-        String usuario, contrasenia ;
-        Usuario user = null; 
+        int opcion = 0, opcion1 = 0, opcion2 = 0,monto,categoriaMonto,montoIngresos;
+        boolean categoriasCheck=true;
+        File usuariosFile = new File("usuariosFile.csv"), datosUsuariosFile = new File("datosUsuariosFile.csv");
+        String usuario, contrasenia ,categoriaNombre,fechaMonto;
+        Usuario user = null;
         FileManagement fileManagement = new FileManagement();
-        /*
         Movimiento ingresos = new Movimiento();
-        Movimiento egresos = new Movimiento();
-        ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
-        */
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+        ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
+        ArrayList<String> categoriasUsuario = new ArrayList<String>();
 
         boolean loggedIn = false;
         boolean principal = true;
@@ -58,9 +56,20 @@ public class Driver {
                     System.out.println("");
                     System.out.println("Ingrese su contraseña:");
                     contrasenia = scanner.nextLine();
-
-                    if (autenticarUsuario(usuario, contrasenia,usuariosFile) == true) {
+                    String[] datosUsuario = autenticarUsuario(usuario, contrasenia,usuariosFile);
+                    if (datosUsuario!=null) {
                         loggedIn = true;
+                        
+                        String nombreUsuario = datosUsuario[0];
+                        String apellidoUsuario = datosUsuario[1];
+                        String fechaNacimientoUsuario = datosUsuario[2];
+                        String dpiUsuario = datosUsuario[3];
+                        String correoUsuario = datosUsuario[4];
+                        String contraseniaUsuario = datosUsuario[5];
+                        
+                        // Crear una instancia de Usuario
+                        user = new Usuario(nombreUsuario, apellidoUsuario, fechaNacimientoUsuario, dpiUsuario, correoUsuario, contraseniaUsuario, null, null);
+                        
                     }else {
                         System.out.println("");
                         System.out.println("Usuario o contraseña incorrectos. Intente nuevamente.");
@@ -69,7 +78,7 @@ public class Driver {
                     if (loggedIn == true) { // Si se inició sesión
                         while (loggedIn) {
                             System.out.println("");
-                            System.out.println("Bienvenido " + usuario);
+                            System.out.println("Bienvenido " + user.getNombre()+" " +user.getApellido());
 
                             printMenu();
 
@@ -85,6 +94,73 @@ public class Driver {
                                 case 1: // Ingreso presupuesto planificado
                                     System.out.println("Ingreso del presupuesto planificado");
 
+                                                                
+                                    System.out.print("Ingresa el nombre del mes del presupuesto: ");
+                                    String nombrePresupuesto = scanner.nextLine();
+
+                                    System.out.print("Ingresa el día de creación: ");
+                                    int diaCreacion = scanner.nextInt();scanner.nextLine();
+
+                                    System.out.print("Ingresa el mes de creación: ");
+                                    int mesCreacion = scanner.nextInt();scanner.nextLine();
+
+                                    // Pregunta y captura el año de creación
+                                    System.out.print("Ingresa el año de creación: ");
+                                    int yearCreacion = scanner.nextInt();scanner.nextLine();
+
+                                    Presupuesto presupuesto = new Presupuesto(nombrePresupuesto, diaCreacion, mesCreacion, yearCreacion, null);
+
+                                    System.out.println("Ingrese el monto total de ingresos que tendrá");
+                                    montoIngresos = scanner.nextInt();scanner.nextLine();
+                                    ingresos.setMonto(montoIngresos);
+
+                                    System.out.println("Ingrese la fecha del monto");
+                                    fechaMonto = scanner.nextLine();
+                                    ingresos.setFecha(fechaMonto);
+
+                                    movimientos.add(ingresos);
+
+                                    presupuesto.setMovimientos(movimientos);
+
+                                    user.setPresupuesto(presupuesto);
+
+                                    System.out.println("Desea ingresar sus categorias a planificar? 1-Si ; 2-No");
+                                    opcion2 = scanner.nextInt();scanner.nextLine();
+
+                                    switch (opcion2) {
+                                        case 1:
+                                            while (categoriasCheck) {
+                                                Movimiento egreso = new Movimiento();
+                                            
+                                                System.out.println("Ingrese el nombre de la categoria");
+                                                categoriaNombre = scanner.nextLine();
+                                                egreso.setCategoria(categoriaNombre);
+                                                categoriasUsuario.add(categoriaNombre);
+
+                                                System.out.println("Ingrese el monto");
+                                                categoriaMonto = scanner.nextInt();
+                                                scanner.nextLine();
+                                                egreso.setMonto(categoriaMonto);
+
+                                                categoriasCheck = volverAlMenu(scanner, " a ingresar otra categoria?");
+
+                                            }
+                                            user.setCategoriasUsuario(categoriasUsuario);
+
+
+                                            break;
+                                        case 2:
+                                            loggedIn = false;
+                                            break;
+                                    
+                                        default:
+                                            break;
+                                    }
+
+
+                                    if(!loggedIn){
+                                        break;
+                                    }
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 2: // Ingreso post-mes
@@ -108,7 +184,7 @@ public class Driver {
                                     System.out.println("Ingrese la fecha de fin (en formato YYYY-MM-DD):");
                                     String fechaFinStr = scanner.nextLine();
                                     Date fechaFin = parsearFecha(fechaFinStr);
-                                    user.getPresupuesto().consultarSaldosPorFechas(fechaInicio, fechaFin);
+                                    //user.getPresupuesto().consultarSaldosPorFechas(fechaInicio, fechaFin);
                                     
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
@@ -182,7 +258,7 @@ public class Driver {
         return datosUsuario;
     }
 
-    public static boolean autenticarUsuario(String usuario, String contrasenia, File nombreFile) {
+    public static String[] autenticarUsuario(String usuario, String contrasenia, File nombreFile) {
         String contraseniaEncrip = generarHashMD5(contrasenia);
         
 
@@ -195,7 +271,7 @@ public class Driver {
                     String nombreEnArchivo = datosUsuario[0];
                     String contraseniaEnArchivo = datosUsuario[5];
                     if (nombreEnArchivo.equals(usuario) && contraseniaEnArchivo.equals(contraseniaEncrip)) {
-                        return true;
+                        return datosUsuario;
                     }
                 }
 
@@ -204,7 +280,7 @@ public class Driver {
             e.printStackTrace();
         }
 
-        return false;
+        return null;
     }
 
     public static void printMenu() {

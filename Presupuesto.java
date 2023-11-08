@@ -20,6 +20,11 @@ public class Presupuesto {
         this.yearCreacion = yearCreacion;
         this.movimientos = movimientos;
     }
+
+    public void setMovimientos(ArrayList<Movimiento> movimientos) {
+        this.movimientos = movimientos;
+    }
+
     public void calcularBalance(){
         int ingresos = 0;
         int egresos = 0;
@@ -62,22 +67,22 @@ public class Presupuesto {
         return consejo;
     }
 
-    public void consultarSaldosPorFechas(Date fechaInicio, Date fechaFin) {
-        int ingresos = 0;
-        int egresos = 0;
+    // public void consultarSaldosPorFechas(Date fechaInicio, Date fechaFin) {
+    //     int ingresos = 0;
+    //     int egresos = 0;
 
-        for (Movimiento movimiento : movimientos) {
-            if (movimiento.getFecha().after(fechaInicio) && movimiento.getFecha().before(fechaFin)) {
-                if (movimiento.getTipo() == 1) { // Ingresos
-                    ingresos += movimiento.getMonto();
-                } else if (movimiento.getTipo() == 2) { // Egresos
-                    egresos += movimiento.getMonto();
-                }
-            }
-        }
+    //     for (Movimiento movimiento : movimientos) {
+    //         if (movimiento.getFecha().after(fechaInicio) && movimiento.getFecha().before(fechaFin)) {
+    //             if (movimiento.getTipo() == 1) { // Ingresos
+    //                 ingresos += movimiento.getMonto();
+    //             } else if (movimiento.getTipo() == 2) { // Egresos
+    //                 egresos += movimiento.getMonto();
+    //             }
+    //         }
+    //     }
 
-        System.out.println("Ingresos en el rango de fechas: " + ingresos);
-        System.out.println("Egresos en el rango de fechas: " + egresos);
-    }
+    //     System.out.println("Ingresos en el rango de fechas: " + ingresos);
+    //     System.out.println("Egresos en el rango de fechas: " + egresos);
+    // }
 
 }
