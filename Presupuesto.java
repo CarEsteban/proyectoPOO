@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,6 +13,9 @@ public class Presupuesto {
 
     //metodos
 
+    public ArrayList<Movimiento> getMovimientos() {
+        return movimientos;
+    }
 
     public Presupuesto(String nombrePresupuesto, int diaCreacion, int mesCreacion, int yearCreacion, ArrayList<Movimiento> movimientos) {
         this.nombrePresupuesto = nombrePresupuesto;

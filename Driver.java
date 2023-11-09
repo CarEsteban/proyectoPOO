@@ -167,23 +167,41 @@ public class Driver {
                                     if (loggedIn) {
                                         System.out.println("Ingreso del presupuesto ejecutado");
                                 
-                                        System.out.print("Ingresa el monto ejecutado: ");
-                                        int montoEjecutado = scanner.nextInt();
-                                        scanner.nextLine();
+                                        // Recorre las categorías del usuario y permite al usuario seleccionar una
+                                        if (user.getCategoriasUsuario().isEmpty()) {
+                                            System.out.println("No tiene categorías planificadas. Por favor, planifique categorías primero.");
+                                        } else {
+                                            System.out.println("Seleccione una categoría para el ingreso ejecutado:");
+                                            for (int i = 0; i < user.getCategoriasUsuario().size(); i++) {
+                                                System.out.println((i + 1) + ": " + user.getCategoriasUsuario().get(i));
+                                            }
                                 
-                                        System.out.print("Ingresa la fecha del monto ejecutado (en formato YYYY-MM-DD): ");
-                                        String fechaMontoEjecutado = scanner.nextLine();
+                                            int categoriaSeleccionada = scanner.nextInt();
+                                            scanner.nextLine();
                                 
-                                        Movimiento movimientoEjecutado = new Movimiento();
-                                        movimientoEjecutado.setMonto(montoEjecutado);
-                                        movimientoEjecutado.setFecha(fechaMontoEjecutado);
+                                            if (categoriaSeleccionada >= 1 && categoriaSeleccionada <= user.getCategoriasUsuario().size()) {
+                                                System.out.print("Ingresa el monto ejecutado: ");
+                                                int montoEjecutado = scanner.nextInt();
+                                                scanner.nextLine();
                                 
-                                        // Asigna un tipo 2 para indicar que es un egreso ejecutado
-                                        movimientoEjecutado.setTipo(2);
+                                                System.out.print("Ingresa la fecha del monto ejecutado (en formato YYYY-MM-DD): ");
+                                                String fechaMontoEjecutado = scanner.nextLine();
                                 
-                                        user.getPresupuesto().getMovimientos().add(movimientoEjecutado);
+                                                Movimiento movimientoEjecutado = new Movimiento();
+                                                movimientoEjecutado.setMonto(montoEjecutado);
+                                                movimientoEjecutado.setFecha(fechaMontoEjecutado);
+                                                movimientoEjecutado.setCategoria(user.getCategoriasUsuario().get(categoriaSeleccionada - 1)); // Asignar la categoría seleccionada
                                 
-                                        System.out.println("Monto ejecutado ingresado con éxito.");
+                                                // Asigna un tipo 2 para indicar que es un egreso ejecutado
+                                                movimientoEjecutado.setTipo(2);
+                                
+                                                user.getPresupuesto().getMovimientos().add(movimientoEjecutado);
+                                
+                                                System.out.println("Monto ejecutado ingresado con éxito en la categoría " + user.getCategoriasUsuario().get(categoriaSeleccionada - 1));
+                                            } else {
+                                                System.out.println("Opción inválida. Seleccione una categoría válida.");
+                                            }
+                                        }
                                     } else {
                                         System.out.println("Debe iniciar sesión para ingresar presupuesto ejecutado.");
                                     }
