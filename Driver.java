@@ -168,7 +168,7 @@ public class Driver {
                                         System.out.println("Ingreso del presupuesto ejecutado");
                                 
                                         // Recorre las categorías del usuario y permite al usuario seleccionar una
-                                        if (user.getCategoriasUsuario().isEmpty()) {
+                                        if (user.getCategoriasUsuario()== null || user.getCategoriasUsuario().isEmpty()) {
                                             System.out.println("No tiene categorías planificadas. Por favor, planifique categorías primero.");
                                         } else {
                                             System.out.println("Seleccione una categoría para el ingreso ejecutado:");
@@ -205,10 +205,13 @@ public class Driver {
                                     } else {
                                         System.out.println("Debe iniciar sesión para ingresar presupuesto ejecutado.");
                                     }
+                                    if (user.getCategoriasUsuario() != null && !user.getCategoriasUsuario().isEmpty()) {
+                                        loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
+                                    } else {
+                                        loggedIn = true; // Regresar al menú principal
+                                    }
                                 
-                                    loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
-
                                     //fileManagement.abrirCSV(usuariosFile);
                                     //usuarios = fileManagement.leerUsuarios();
 
