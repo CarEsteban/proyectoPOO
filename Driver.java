@@ -218,18 +218,20 @@ public class Driver {
                                 case 3: // Balance
                                     user.getPresupuesto().calcularBalance();
                                     System.out.println("Balance actual: " + user.getPresupuesto().getBalance());
-                                    
+                                
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 4: // Consulta de saldo por fechas
                                     System.out.println("Ingrese la fecha de inicio (en formato YYYY-MM-DD):");
                                     String fechaInicioStr = scanner.nextLine();
-                                    Date fechaInicio = parsearFecha(fechaInicioStr);
+                                    Date fechaInicio = user.getPresupuesto().parsearFecha(fechaInicioStr);
+                                
                                     System.out.println("Ingrese la fecha de fin (en formato YYYY-MM-DD):");
                                     String fechaFinStr = scanner.nextLine();
-                                    Date fechaFin = parsearFecha(fechaFinStr);
-                                    //user.getPresupuesto().consultarSaldosPorFechas(fechaInicio, fechaFin);
-                                    
+                                    Date fechaFin = user.getPresupuesto().parsearFecha(fechaFinStr);
+                                
+                                    user.getPresupuesto().consultarSaldosPorFechas(fechaInicio, fechaFin);
+                                
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 5: // Consejos extras

@@ -1,6 +1,9 @@
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 
 public class Presupuesto {
     private String nombrePresupuesto;
@@ -70,22 +73,34 @@ public class Presupuesto {
         return consejo;
     }
 
-    // public void consultarSaldosPorFechas(Date fechaInicio, Date fechaFin) {
-    //     int ingresos = 0;
-    //     int egresos = 0;
+    public Date parsearFecha(String fechaStr) {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    try {
+        Date fecha = sdf.parse(fechaStr);
+        return fecha;
+    } catch (ParseException e) {
+        e.printStackTrace();
+        return null;
+    }
+    }
 
-    //     for (Movimiento movimiento : movimientos) {
-    //         if (movimiento.getFecha().after(fechaInicio) && movimiento.getFecha().before(fechaFin)) {
-    //             if (movimiento.getTipo() == 1) { // Ingresos
-    //                 ingresos += movimiento.getMonto();
-    //             } else if (movimiento.getTipo() == 2) { // Egresos
-    //                 egresos += movimiento.getMonto();
-    //             }
-    //         }
-    //     }
-
-    //     System.out.println("Ingresos en el rango de fechas: " + ingresos);
-    //     System.out.println("Egresos en el rango de fechas: " + egresos);
-    // }
+    public void consultarSaldosPorFechas(Date fechaInicio, Date fechaFin) {
+        int ingresos = 0;
+        int egresos = 0;
+    
+        for (Movimiento movimiento : movimientos) {
+            Date fechaMovimiento = parsearFecha(movimiento.getFecha());
+            if (fechaMovimiento.after(fechaInicio) && fechaMovimiento.before(fechaFin)) {
+                if (movimiento.getTipo() == 1) { // Ingresos planificados
+                    ingresos += movimiento.getMonto();
+                } else if (movimiento.getTipo() == 2) { // Egresos ejecutados
+                    egresos += movimiento.getMonto();
+                }
+            }
+        }
+    
+        System.out.println("Ingresos en el rango de fechas: " + ingresos);
+        System.out.println("Egresos en el rango de fechas: " + egresos);
+    }
 
 }
