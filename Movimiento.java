@@ -1,19 +1,29 @@
+import java.time.LocalDate;
 import java.util.Date;
-
+//tipo 1=ingreso ; 2=egreso
 public class Movimiento {
     private int monto;
     private String categoria;
     private String descripcion;
     private int tipo;
-    private String fecha;
+    private LocalDate fecha;
 
-    //metodos
-    public void setMonto(int monto){
+    public Movimiento(int monto, String categoria, String descripcion, LocalDate fecha, String tipo) {
         this.monto = monto;
-    }
-    public void setCategoria(String categoria) {
         this.categoria = categoria;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        if(tipo.equals("Ingreso")){
+            this.tipo = 1;
+        }else if (tipo.equals("Egreso")) {
+            this.tipo = 2;
+        }else{
+            this.tipo = 0;
+        }
     }
+
+    
+
     public int getMonto() {
         return monto;
     }
@@ -26,13 +36,8 @@ public class Movimiento {
     public int getTipo() {
         return tipo;
     }
-    public String getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
-    }
+
 }

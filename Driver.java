@@ -1,14 +1,9 @@
-import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
+import java.util.*;
+import java.text.*;
+import java.time.*;
 
 public class Driver {
     
@@ -16,11 +11,11 @@ public class Driver {
         Scanner scanner = new Scanner(System.in);
         int opcion = 0, opcion1 = 0, opcion2 = 0,monto,categoriaMonto,montoIngresos;
         boolean categoriasCheck=true;
-        File usuariosFile = new File("usuariosFile.csv"), datosUsuariosFile = new File("datosUsuariosFile.csv");
-        String usuario, contrasenia ,categoriaNombre,fechaMonto;
+        File usuariosFile = new File("usuariosFile.csv"), datosUsuariosFile = new File("datosUsuariosFile.csv"), presupuestoUsuarios = new File("presupuestoUsuarios.csv");
+        String usuario, contrasenia ,categoriaNombre,fechaMonto,categoriaIngreso,descripcionIngreso,descripcionCategoria,fecha;
+        LocalDate fechaCreacion,fechaIngreso,fechaCategoria;
         Usuario user = null;
         FileManagement fileManagement = new FileManagement();
-        Movimiento ingresos = new Movimiento();
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
         ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
         ArrayList<String> categoriasUsuario = new ArrayList<String>();
@@ -34,6 +29,8 @@ public class Driver {
         fileManagement.crearCSV(usuariosFile, encabezadoUsuario);
         String[] encabezadoDatos = {"Nombre", "Categoria", "Monto"};
         fileManagement.crearCSV(datosUsuariosFile, encabezadoDatos);
+        String[] encabezadoPresupuesto = {"Usuario", "Nombre Presupuesto", "Fecha de Creacion", "Categorias"};
+        fileManagement.crearCSV(presupuestoUsuarios, encabezadoPresupuesto);
 
 
 
@@ -94,31 +91,46 @@ public class Driver {
                                 case 1: // Ingreso presupuesto planificado
                                     System.out.println("Ingreso del presupuesto planificado");
 
-                                                                
-                                    System.out.print("Ingresa el nombre del mes del presupuesto: ");
+
+                                    System.out.print("Ingresa el nombre del mes para el presupuesto: ");
                                     String nombrePresupuesto = scanner.nextLine();
 
-                                    System.out.print("Ingresa el día de creación: ");
-                                    int diaCreacion = scanner.nextInt();scanner.nextLine();
+                                    boolean validacionPresupuesto = fileManagement.verificarNombrePresupuesto(presupuestoUsuarios, user, nombrePresupuesto);
+                                    
 
-                                    System.out.print("Ingresa el mes de creación: ");
-                                    int mesCreacion = scanner.nextInt();scanner.nextLine();
+                                    if(!validacionPresupuesto){
+                                        try {
+                                            Thread.sleep(1000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        System.out.println("Lo siento, ya existe un presupuesto del mismo usuario con el mismo nombre");
+                                        break;
+                                    }
 
-                                    // Pregunta y captura el año de creación
-                                    System.out.print("Ingresa el año de creación: ");
-                                    int yearCreacion = scanner.nextInt();scanner.nextLine();
+                                    fechaCreacion = LocalDate.now();
 
-                                    Presupuesto presupuesto = new Presupuesto(nombrePresupuesto, diaCreacion, mesCreacion, yearCreacion, null);
+                                    //creacion del presupuesto
+                                    Presupuesto presupuesto = new Presupuesto(nombrePresupuesto, fechaCreacion, null);
 
+                                    //Datos para el nuevo ingreso de dinero
                                     System.out.println("Ingrese el monto total de ingresos que tendrá");
                                     montoIngresos = scanner.nextInt();scanner.nextLine();
-                                    ingresos.setMonto(montoIngresos);
 
-                                    System.out.println("Ingrese la fecha del monto");
+                                    System.out.println("Ingrese la categoria del ingreso");
+                                    categoriaIngreso = scanner.nextLine();
+
+                                    System.out.println("Ingrese una pequeña descripción del ingreso, a que será destinado o de donde proviene");
+                                    descripcionIngreso = scanner.nextLine();
+
+                                    System.out.println("Ingrese la fecha del monto que ingresará en formato YYYY-MM-DD");
                                     fechaMonto = scanner.nextLine();
-                                    ingresos.setFecha(fechaMonto);
 
-                                    movimientos.add(ingresos);
+                                    fechaIngreso = LocalDate.parse(fechaMonto);
+
+
+
+                                    movimientos.add(new Movimiento(montoIngresos, categoriaIngreso, descripcionIngreso, fechaIngreso,"Ingreso"));
 
                                     presupuesto.setMovimientos(movimientos);
 
@@ -130,24 +142,51 @@ public class Driver {
                                     switch (opcion2) {
                                         case 1:
                                             while (categoriasCheck) {
-                                                Movimiento egreso = new Movimiento();
                                             
                                                 System.out.println("Ingrese el nombre de la categoria");
                                                 categoriaNombre = scanner.nextLine();
-                                                egreso.setCategoria(categoriaNombre);
                                                 categoriasUsuario.add(categoriaNombre);
 
                                                 System.out.println("Ingrese el monto");
-                                                categoriaMonto = scanner.nextInt();
-                                                scanner.nextLine();
-                                                egreso.setMonto(categoriaMonto);
+                                                categoriaMonto = scanner.nextInt();scanner.nextLine();
+
+
+                                                System.out.println("Ingrese una pequeña descripcion");
+                                                descripcionCategoria = scanner.nextLine();
+
+                                                System.out.println("Ingrese la fecha planificada de este gasto en formato YYYY-MM-DD");
+                                                fecha = scanner.nextLine();
+
+                                                fechaCategoria = LocalDate.parse(fecha);
+
+
+                                                movimientos.add(new Movimiento(categoriaMonto, categoriaNombre, descripcionCategoria, fechaCategoria, "Egreso"));
+                                                presupuesto.setMovimientos(movimientos);
+                                                user.setPresupuesto(presupuesto);
+
 
                                                 categoriasCheck = volverAlMenu(scanner, " a ingresar otra categoria?");
 
                                             }
                                             user.setCategoriasUsuario(categoriasUsuario);
+                                            
+                                            StringJoiner joiner = new StringJoiner("/");
+                                            for (String categoria : user.getCategoriasUsuario()) {
+                                                joiner.add(categoria);
+                                            }
+                                            String categoriasPresupuesto = joiner.toString();
+
+                                            String[] datosPresupuesto = {user.getNombre(), presupuesto.getNombre(), presupuesto.getFechaCreacion(), categoriasPresupuesto};
+
+                                            fileManagement.ingresarNuevoPresupuestoUsuario(datosPresupuesto,presupuestoUsuarios);
 
 
+
+
+
+
+
+                                            //meter aqui toda la info a un nuevo csv del presupuesto del usuario
                                             break;
                                         case 2:
                                             loggedIn = false;
@@ -163,6 +202,7 @@ public class Driver {
                                     }
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
+                                    
                                 case 2: // Ingreso post-mes
                                     if (loggedIn) {
                                         System.out.println("Ingreso del presupuesto ejecutado");
@@ -171,6 +211,7 @@ public class Driver {
                                         if (user.getCategoriasUsuario()== null || user.getCategoriasUsuario().isEmpty()) {
                                             System.out.println("No tiene categorías planificadas. Por favor, planifique categorías primero.");
                                         } else {
+                                            
                                             System.out.println("Seleccione una categoría para el ingreso ejecutado:");
                                             for (int i = 0; i < user.getCategoriasUsuario().size(); i++) {
                                                 System.out.println((i + 1) + ": " + user.getCategoriasUsuario().get(i));
@@ -181,19 +222,20 @@ public class Driver {
                                 
                                             if (categoriaSeleccionada >= 1 && categoriaSeleccionada <= user.getCategoriasUsuario().size()) {
                                                 System.out.print("Ingresa el monto ejecutado: ");
-                                                int montoEjecutado = scanner.nextInt();
-                                                scanner.nextLine();
+                                                int montoEjecutado = scanner.nextInt();scanner.nextLine();
+
+                                                System.out.print("Ingresa una pequeña descripcion del egreso: ");
+                                                String descripcionEgreso = scanner.nextLine();
                                 
                                                 System.out.print("Ingresa la fecha del monto ejecutado (en formato YYYY-MM-DD): ");
                                                 String fechaMontoEjecutado = scanner.nextLine();
+                                                LocalDate fechaMontoEgreso = LocalDate.parse(fechaMontoEjecutado);
+                                                
+
+                                                Movimiento movimientoEjecutado;
                                 
-                                                Movimiento movimientoEjecutado = new Movimiento();
-                                                movimientoEjecutado.setMonto(montoEjecutado);
-                                                movimientoEjecutado.setFecha(fechaMontoEjecutado);
-                                                movimientoEjecutado.setCategoria(user.getCategoriasUsuario().get(categoriaSeleccionada - 1)); // Asignar la categoría seleccionada
-                                
-                                                // Asigna un tipo 2 para indicar que es un egreso ejecutado
-                                                movimientoEjecutado.setTipo(2);
+
+                                                movimientoEjecutado = new Movimiento(montoEjecutado, user.getCategoriasUsuario().get(categoriaSeleccionada - 1), descripcionEgreso, fechaMontoEgreso, "Egreso");
                                 
                                                 user.getPresupuesto().getMovimientos().add(movimientoEjecutado);
                                 
@@ -212,9 +254,7 @@ public class Driver {
                                     }
                                 
                                     break;
-                                    //fileManagement.abrirCSV(usuariosFile);
-                                    //usuarios = fileManagement.leerUsuarios();
-
+/* 
                                 case 3: // Balance
                                     user.getPresupuesto().calcularBalance();
                                     System.out.println("Balance actual: " + user.getPresupuesto().getBalance());
@@ -234,10 +274,12 @@ public class Driver {
                                 
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
+                                */
                                 case 5: // Consejos extras
                                 
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
+                                
                                 case 6: // Salir
                                     loggedIn = false;
                                     break;

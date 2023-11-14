@@ -1,15 +1,15 @@
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
 
 public class Presupuesto {
     private String nombrePresupuesto;
-    private int diaCreacion;
-    private int mesCreacion;
-    private int yearCreacion;
+    private LocalDate fechaCreacion;
     ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
     private String consejo;
     private int balance;
@@ -20,11 +20,9 @@ public class Presupuesto {
         return movimientos;
     }
 
-    public Presupuesto(String nombrePresupuesto, int diaCreacion, int mesCreacion, int yearCreacion, ArrayList<Movimiento> movimientos) {
+    public Presupuesto(String nombrePresupuesto, LocalDate fechaCreacion, ArrayList<Movimiento> movimientos) {
         this.nombrePresupuesto = nombrePresupuesto;
-        this.diaCreacion = diaCreacion;
-        this.mesCreacion = mesCreacion;
-        this.yearCreacion = yearCreacion;
+        this.fechaCreacion = fechaCreacion;
         this.movimientos = movimientos;
     }
 
@@ -72,11 +70,19 @@ public class Presupuesto {
     public String getConsejo(){
         return consejo;
     }
-
-    public Date parsearFecha(String fechaStr) {
+    public String getNombre() {
+        return nombrePresupuesto;
+    }
+    public String getFechaCreacion() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String fechaPresupuesto = fechaCreacion.format(formatter);
+        return fechaPresupuesto;
+    }
+/* 
+    public Date parsearFecha(LocalDate localDate) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     try {
-        Date fecha = sdf.parse(fechaStr);
+        Date fecha = sdf.parse(localDate);
         return fecha;
     } catch (ParseException e) {
         e.printStackTrace();
@@ -102,5 +108,6 @@ public class Presupuesto {
         System.out.println("Ingresos en el rango de fechas: " + ingresos);
         System.out.println("Egresos en el rango de fechas: " + egresos);
     }
+*/
 
 }
