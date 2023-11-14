@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.util.Date;
 //tipo 1=ingreso ; 2=egreso
 public class Movimiento {
     private int monto;

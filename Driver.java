@@ -9,7 +9,7 @@ public class Driver {
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int opcion = 0, opcion1 = 0, opcion2 = 0,monto,categoriaMonto,montoIngresos;
+        int opcion = 0, opcion1 = 0, opcion2 = 0,categoriaMonto,montoIngresos;
         boolean categoriasCheck=true;
         File usuariosFile = new File("usuariosFile.csv"), datosUsuariosFile = new File("datosUsuariosFile.csv"), presupuestoUsuarios = new File("presupuestoUsuarios.csv");
         String usuario, contrasenia ,categoriaNombre,fechaMonto,categoriaIngreso,descripcionIngreso,descripcionCategoria,fecha;
@@ -131,7 +131,7 @@ public class Driver {
 
 
                                     movimientos.add(new Movimiento(montoIngresos, categoriaIngreso, descripcionIngreso, fechaIngreso,"Ingreso"));
-
+                                    
                                     presupuesto.setMovimientos(movimientos);
 
                                     user.setPresupuesto(presupuesto);
@@ -179,14 +179,7 @@ public class Driver {
                                             String[] datosPresupuesto = {user.getNombre(), presupuesto.getNombre(), presupuesto.getFechaCreacion(), categoriasPresupuesto};
 
                                             fileManagement.ingresarNuevoPresupuestoUsuario(datosPresupuesto,presupuestoUsuarios);
-
-
-
-
-
-
-
-                                            //meter aqui toda la info a un nuevo csv del presupuesto del usuario
+                                            
                                             break;
                                         case 2:
                                             loggedIn = false;
@@ -381,7 +374,7 @@ public class Driver {
         System.out.println("1: Ingresar presupuesto planificado");
         System.out.println("2: Ingresar presupuesto ejecutado");
         System.out.println("3: Balance");
-        System.out.println("4: Consulta de saldo por fechas");
+        System.out.println("4: Gastado hasta la fecha");
         System.out.println("5: Consejos extras");
         System.out.println("6: Salir");
         System.out.println("");
