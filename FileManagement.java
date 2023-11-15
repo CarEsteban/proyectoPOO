@@ -121,4 +121,26 @@ public class FileManagement {
         }
 
     }
+    public void agregarIngresoPostMes(String nombreUsuario, String categoria, int monto, String tipoMovimiento) {
+        try (BufferedWriter wr = new BufferedWriter(new FileWriter(datosUsuariosFile, true))) {
+            StringBuilder linea = new StringBuilder();
+    
+            // Ajustar el monto para reflejar el gasto como un valor negativo
+            if (tipoMovimiento.equals("Egreso")) {
+                monto = -monto; // Convertir el gasto a un valor negativo
+            }
+    
+            // Construir la línea a agregar al archivo CSV
+            linea.append(nombreUsuario).append(",").append(categoria).append(",").append(monto).append("\n");
+    
+            // Escribir la línea en el archivo CSV
+            wr.append(linea.toString());
+    
+            System.out.println("Ingreso post-mes agregado al archivo CSV 'datosUsuariosFile' correctamente.");
+    
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }

@@ -39,4 +39,8 @@ public class Movimiento {
         return fecha;
     }
 
+    public String toString(){
+        return categoria + "," + monto;
+    }
+
 }
