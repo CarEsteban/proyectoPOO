@@ -231,6 +231,13 @@ public class Driver {
                                                 movimientoEjecutado = new Movimiento(montoEjecutado, user.getCategoriasUsuario().get(categoriaSeleccionada - 1), descripcionEgreso, fechaMontoEgreso, "Egreso");
                                 
                                                 user.getPresupuesto().getMovimientos().add(movimientoEjecutado);
+                                                
+                                                // Llamada al método para agregar el ingreso post-mes al archivo CSV
+                                                String tipoMovimiento = "Egreso"; // Esto indica que es un gasto
+                                                fileManagement.agregarIngresoPostMes(user.getNombre(), user.getCategoriasUsuario().get(categoriaSeleccionada - 1), montoEjecutado, tipoMovimiento);
+
+                                                // Mensaje indicando que se agregó el ingreso post-mes
+                                                System.out.println("Ingreso post-mes registrado correctamente.");
                                 
                                                 System.out.println("Monto ejecutado ingresado con éxito en la categoría " + user.getCategoriasUsuario().get(categoriaSeleccionada - 1));
                                             } else {
