@@ -126,6 +126,10 @@ public class Driver {
                                     System.out.println("Ingrese la fecha del monto que ingresará en formato YYYY-MM-DD");
                                     fechaMonto = scanner.nextLine();
 
+                                    String nombreUsuario = user.getNombre();
+
+                                    fileManagement.agregarDatosIngreso(nombreUsuario, categoriaIngreso, montoIngresos);
+
                                     fechaIngreso = LocalDate.parse(fechaMonto);
 
 
@@ -231,7 +235,7 @@ public class Driver {
                                                 movimientoEjecutado = new Movimiento(montoEjecutado, user.getCategoriasUsuario().get(categoriaSeleccionada - 1), descripcionEgreso, fechaMontoEgreso, "Egreso");
                                 
                                                 user.getPresupuesto().getMovimientos().add(movimientoEjecutado);
-                                                
+
                                                 // Llamada al método para agregar el ingreso post-mes al archivo CSV
                                                 String tipoMovimiento = "Egreso"; // Esto indica que es un gasto
                                                 fileManagement.agregarIngresoPostMes(user.getNombre(), user.getCategoriasUsuario().get(categoriaSeleccionada - 1), montoEjecutado, tipoMovimiento);

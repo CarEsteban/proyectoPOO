@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.LocalDate;
 public class FileManagement {
     static File usuariosFile = new File("usuariosFile.csv");
     static File datosUsuariosFile = new File("datosUsuariosFile.csv");
@@ -143,4 +144,46 @@ public class FileManagement {
         }
     }
     
+    public void agregarDatosIngreso(String nombreUsuario, String categoriaIngreso, int montoIngresos,
+                                String descripcionIngreso, LocalDate fechaIngreso) {
+    try (BufferedWriter wr = new BufferedWriter(new FileWriter(datosUsuariosFile, true))) {
+        StringBuilder linea = new StringBuilder();
+
+        // Asegurarse de que el monto sea positivo
+        if (montoIngresos < 0) {
+            montoIngresos = -montoIngresos; // Convertir el monto negativo a positivo
+        }
+
+        // Construir la línea a agregar al archivo CSV
+        linea.append(nombreUsuario).append(",").append(categoriaIngreso).append(",").append(montoIngresos).append("\n");
+
+        // Escribir la línea en el archivo CSV
+        wr.append(linea.toString());
+
+        System.out.println("Datos de ingreso registrados correctamente en el archivo CSV 'datosUsuariosFile'.");
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    }
+    
+    public void agregarDatosIngreso(String nombreUsuario, String categoriaIngreso, int montoIngresos) {
+        try (BufferedWriter wr = new BufferedWriter(new FileWriter(datosUsuariosFile, true))) {
+            StringBuilder linea = new StringBuilder();
+
+            // Asegurarse de que el monto sea positivo
+            if (montoIngresos < 0) {
+                montoIngresos = -montoIngresos; // Convertir el monto negativo a positivo
+            }
+
+            // Construir la línea a agregar al archivo CSV
+            linea.append(nombreUsuario).append(",").append(categoriaIngreso).append(",").append(montoIngresos).append("\n");
+
+            // Escribir la línea en el archivo CSV
+            wr.append(linea.toString());
+
+            System.out.println("Datos de ingreso registrados correctamente en el archivo CSV 'datosUsuariosFile'.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
