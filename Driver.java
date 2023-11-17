@@ -19,6 +19,8 @@ public class Driver {
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
         ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
         ArrayList<String> categoriasUsuario = new ArrayList<String>();
+        int balance = 0, numlinea;
+        String[] linea = null;
 
         boolean loggedIn = false;
         boolean principal = true;
@@ -258,13 +260,16 @@ public class Driver {
                                     }
                                 
                                     break;
-/* 
+ 
                                 case 3: // Balance
-                                    user.getPresupuesto().calcularBalance();
-                                    System.out.println("Balance actual: " + user.getPresupuesto().getBalance());
+                                    autenticarUsuarioBalance(user, datosUsuariosFile, balance);
+                                    System.out.println("");
+                                    System.out.println("----------------------------------");
+                                    System.out.println("Balance actual: Q" + balance);
                                 
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
+/*
                                 case 4: // Consulta de saldo por fechas
                                     System.out.println("Ingrese la fecha de inicio (en formato YYYY-MM-DD):");
                                     String fechaInicioStr = scanner.nextLine();
@@ -284,7 +289,21 @@ public class Driver {
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 
-                                case 6: // Salir
+                                case 6: // Cambiar contraseña
+                                    numlinea = encontrarLinea(user.getNombre(), usuariosFile, contrasenia);
+                                    linea = guardarLinea(numlinea, usuariosFile);
+                                    System.out.println("");
+                                    System.out.println("Ingrese su contraseña nueva:");
+                                    contrasenia = scanner.nextLine();
+                                    contrasenia = generarHashMD5(contrasenia);
+                                    linea[5] = contrasenia;
+
+                                    modificarLinea(usuariosFile, numlinea - 2, linea);
+
+                                    loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
+                                    break;
+
+                                case 7: // Salir
                                     loggedIn = false;
                                     break;
                                 case 0:
@@ -376,6 +395,63 @@ public class Driver {
         return null;
     }
 
+    public static void autenticarUsuarioBalance(Usuario usuario, File nombreFile, int balance) {
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] datosUsuario = line.split(",");
+
+                if (usuario.getNombre().equals(datosUsuario[0])) {
+                    balance += Integer.parseInt(datosUsuario[2]);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int encontrarLinea(String usuario, File nombreFile, String contrasenia) {
+        int conteo = 1;
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] datosUsuario = line.split(",");
+
+                if (usuario.equals(datosUsuario[0]) && contrasenia.equals(datosUsuario[5])) {
+                    break;
+                }
+
+                conteo += 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return conteo;
+    }
+
+    public static String[] guardarLinea(int linea, File nombreFile) {
+        int conteo = 1;
+        String[] datosUsuario = null;
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                datosUsuario = line.split(",");
+
+                if (conteo == linea) {
+                    break;
+                }
+
+                conteo += 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return datosUsuario;
+    }
+
     public static void printMenu() {
         System.out.println("");
         System.out.println("*************************************");
@@ -387,7 +463,8 @@ public class Driver {
         System.out.println("3: Balance");
         System.out.println("4: Gastado hasta la fecha");
         System.out.println("5: Consejos extras");
-        System.out.println("6: Salir");
+        System.out.println("6: Cambiar contraseña");
+        System.out.println("7: Salir");
         System.out.println("");
     }
 
@@ -421,6 +498,7 @@ public class Driver {
             return null;
         }
     }
+
     public static Date parsearFecha(String fechaStr) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -446,6 +524,44 @@ public class Driver {
             }
         } else {
             return true;
+        }
+    }
+
+    public static void modificarLinea(File nombreFile, int numeroLinea, String[] datosModificados) {
+        try (RandomAccessFile raf = new RandomAccessFile(nombreFile, "rw")) {
+            long posicion = 0;
+            int lineaActual = 0;
+
+            // Leer cada línea hasta llegar a la línea que se desea modificar
+            while (lineaActual < numeroLinea) {
+                String linea = raf.readLine();
+                if (linea == null) {
+                    // La línea especificada no existe
+                    System.out.println("La línea especificada no existe.");
+                    return;
+                }
+                posicion = raf.getFilePointer();
+                lineaActual++;
+            }
+
+            // Posicionar el puntero al lugar correcto
+            raf.seek(posicion);
+
+            // Construir la nueva línea
+            StringBuilder nuevaLinea = new StringBuilder();
+            for (int i = 0; i < datosModificados.length; i++) {
+                nuevaLinea.append(datosModificados[i]);
+                if (i < datosModificados.length - 1) {
+                    nuevaLinea.append(",");
+                }
+            }
+            nuevaLinea.append("\n");
+
+            // Escribir la nueva línea
+            raf.writeBytes(nuevaLinea.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
