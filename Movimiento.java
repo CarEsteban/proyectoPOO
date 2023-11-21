@@ -21,7 +21,9 @@ public class Movimiento {
         }
     }
 
-    
+    public boolean esAnterior(LocalDate fechaActual) {
+        return fecha.isBefore(fechaActual);
+    }
 
     public int getMonto() {
         return monto;

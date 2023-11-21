@@ -269,21 +269,19 @@ public class Driver {
                                 
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
-/*
-                                case 4: // Consulta de saldo por fechas
-                                    System.out.println("Ingrese la fecha de inicio (en formato YYYY-MM-DD):");
-                                    String fechaInicioStr = scanner.nextLine();
-                                    Date fechaInicio = user.getPresupuesto().parsearFecha(fechaInicioStr);
-                                
-                                    System.out.println("Ingrese la fecha de fin (en formato YYYY-MM-DD):");
-                                    String fechaFinStr = scanner.nextLine();
-                                    Date fechaFin = user.getPresupuesto().parsearFecha(fechaFinStr);
-                                
-                                    user.getPresupuesto().consultarSaldosPorFechas(fechaInicio, fechaFin);
-                                
+                                case 4: // Gastado hasta la fecha
+                                    autenticarUsuarioBalance(user, datosUsuariosFile, balance);
+                                    System.out.println("");
+                                    System.out.println("----------------------------------");
+                                    System.out.println("Balance actual: Q" + balance);
+                            
+                                    // Calcular y mostrar el gasto hasta la fecha
+                                    LocalDate fechaActual = LocalDate.now();
+                                    int gastoHastaFecha = user.getPresupuesto().calcularGastoHastaFecha(fechaActual);
+                                    System.out.println("Gastado hasta la fecha: Q" + gastoHastaFecha);
+                            
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
-                                */
                                 case 5: // Consejos extras
                                 
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");

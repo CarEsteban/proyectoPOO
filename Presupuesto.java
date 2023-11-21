@@ -74,36 +74,17 @@ public class Presupuesto {
         String fechaPresupuesto = fechaCreacion.format(formatter);
         return fechaPresupuesto;
     }
-/* 
-    public Date parsearFecha(LocalDate localDate) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    try {
-        Date fecha = sdf.parse(localDate);
-        return fecha;
-    } catch (ParseException e) {
-        e.printStackTrace();
-        return null;
-    }
-    }
 
-    public void consultarSaldosPorFechas(Date fechaInicio, Date fechaFin) {
-        int ingresos = 0;
-        int egresos = 0;
-    
+    public int calcularGastoHastaFecha(LocalDate fechaActual) {
+        int gastoTotal = 0;
+
         for (Movimiento movimiento : movimientos) {
-            Date fechaMovimiento = parsearFecha(movimiento.getFecha());
-            if (fechaMovimiento.after(fechaInicio) && fechaMovimiento.before(fechaFin)) {
-                if (movimiento.getTipo() == 1) { // Ingresos planificados
-                    ingresos += movimiento.getMonto();
-                } else if (movimiento.getTipo() == 2) { // Egresos ejecutados
-                    egresos += movimiento.getMonto();
-                }
+            if (movimiento.getTipo() == 2 && movimiento.esAnterior(fechaActual)) {
+                gastoTotal += movimiento.getMonto();
             }
         }
-    
-        System.out.println("Ingresos en el rango de fechas: " + ingresos);
-        System.out.println("Egresos en el rango de fechas: " + egresos);
+
+        return gastoTotal;
     }
-*/
 
 }
