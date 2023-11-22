@@ -20,7 +20,7 @@ public class Driver {
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
         ArrayList<Movimiento> movimientos = new ArrayList<Movimiento>();
         ArrayList<String> categoriasUsuario = new ArrayList<String>();
-        int balance = 0, numlinea;
+        int balance = 0, numlinea, gastado = 0;
         String[] linea = null;
 
         boolean loggedIn = false;
@@ -264,7 +264,7 @@ public class Driver {
                                     break;
  
                                 case 3: // Balance
-                                    autenticarUsuarioBalance(user, datosUsuariosFile, balance);
+                                    balance = autenticarUsuarioBalance(user, datosUsuariosFile);
                                     System.out.println("");
                                     System.out.println("----------------------------------");
                                     System.out.println("Balance actual: Q" + balance);
@@ -272,15 +272,14 @@ public class Driver {
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 4: // Gastado hasta la fecha
-                                    autenticarUsuarioBalance(user, datosUsuariosFile, balance);
+                                    balance = autenticarUsuarioBalance(user, datosUsuariosFile);
                                     System.out.println("");
                                     System.out.println("----------------------------------");
                                     System.out.println("Balance actual: Q" + balance);
                             
                                     // Calcular y mostrar el gasto hasta la fecha
-                                    LocalDate fechaActual = LocalDate.now();
-                                    int gastoHastaFecha = user.getPresupuesto().calcularGastoHastaFecha(fechaActual);
-                                    System.out.println("Gastado hasta la fecha: Q" + gastoHastaFecha);
+                                    gastado = autenticarUsuarioGastado(user, datosUsuariosFile);
+                                    System.out.println("Gastado hasta la fecha: Q" + gastado);
                             
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
@@ -425,7 +424,9 @@ public class Driver {
         return null;
     }
 
-    public static void autenticarUsuarioBalance(Usuario usuario, File nombreFile, int balance) {
+    public static int autenticarUsuarioBalance(Usuario usuario, File nombreFile) {
+        int balance = 0;
+
         try (BufferedReader br = new BufferedReader(new FileReader(nombreFile))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -439,6 +440,28 @@ public class Driver {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return balance;
+    }
+
+    public static int autenticarUsuarioGastado(Usuario usuario, File nombreFile) {
+        int gastado = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] datosUsuario = line.split(",");
+
+                if (usuario.getNombre().equals(datosUsuario[0]) && Integer.parseInt(datosUsuario[2]) < 0) {
+                    gastado += Integer.parseInt(datosUsuario[2]);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return gastado;
     }
 
     public static int encontrarLinea(String usuario, File nombreFile, String contrasenia) {
