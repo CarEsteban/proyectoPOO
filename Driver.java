@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.text.*;
 import java.time.*;
+import java.util.Random;
 
 public class Driver {
     
@@ -11,7 +12,7 @@ public class Driver {
         Scanner scanner = new Scanner(System.in);
         int opcion = 0, opcion1 = 0, opcion2 = 0,categoriaMonto,montoIngresos;
         boolean categoriasCheck=true;
-        File usuariosFile = new File("usuariosFile.csv"), datosUsuariosFile = new File("datosUsuariosFile.csv"), presupuestoUsuarios = new File("presupuestoUsuarios.csv");
+        File usuariosFile = new File("usuariosFile.csv"), datosUsuariosFile = new File("datosUsuariosFile.csv"), presupuestoUsuarios = new File("presupuestoUsuarios.csv"), consejosFile = new File("consejosFile.csv");
         String usuario, contrasenia ,categoriaNombre,fechaMonto,categoriaIngreso,descripcionIngreso,descripcionCategoria,fecha;
         LocalDate fechaCreacion,fechaIngreso,fechaCategoria;
         Usuario user = null;
@@ -45,6 +46,7 @@ public class Driver {
             } catch (InputMismatchException e) {
                 System.out.println("");
                 System.out.println("Ingrese un número.");
+                scanner.nextLine();
             }
 
             switch (opcion) {
@@ -283,7 +285,9 @@ public class Driver {
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 case 5: // Consejos extras
-                                
+                                    
+                                    darConsejo(consejosFile);
+
                                     loggedIn = volverAlMenu(scanner, " a ingresar otra opción? ");
                                     break;
                                 
@@ -336,6 +340,34 @@ public class Driver {
             opcion = 0;
             opcion1 = 0;
             loggedIn = false;
+        }
+    }
+
+    public static void darConsejo(File nombreFile) {
+        Random random = new Random();
+
+        int aleatorio = random.nextInt(10) + 1;
+
+        int contador = 1;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] consejos = line.split(",");
+
+                if (contador == aleatorio) {
+                    System.out.println("");
+                    System.out.println(consejos[1]);
+                    System.out.println("");
+                    break;
+                }
+
+                else {
+                    contador += 1;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
